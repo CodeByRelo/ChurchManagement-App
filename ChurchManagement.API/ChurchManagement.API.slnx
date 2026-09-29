@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../ChurchManagement.Tests/ChurchManagement.Tests.csproj" Id="2cda953a-1322-432a-b352-c26f66a94e89" />
+  <Project Path="ChurchManagement.API.csproj" />
+</Solution>
