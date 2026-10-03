@@ -70,7 +70,7 @@ public class AttendanceController : ControllerBase
 
     [HttpGet("member/{memberId:int}")]
     [Authorize(Roles =
-        "Super Administrator,ChurchAdministrator,Ministry Leader,Member")]
+        "Super Administrator,Church Administrator,Ministry Leader,Member")]
     public async Task<IActionResult> GetByMember(int memberId)
     {
         var attendance =

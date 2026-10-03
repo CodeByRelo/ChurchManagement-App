@@ -2,11 +2,11 @@ const API_BASE_URL = "https://localhost:7290/api";
 
 async function request(endpoint, options = {}) {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    ...options,
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),
     },
-    ...options,
   });
 
   if (!response.ok) {
@@ -89,6 +89,363 @@ export const api = {
   // DASHBOARD
   getDashboard: (token) =>
     request("/Dashboard", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // MEMBERS
+  getMembers: (token) =>
+    request("/Members", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getMember: (id, token) =>
+    request(`/Members/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createMember: (member, token) =>
+    request("/Members", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(member),
+    }),
+
+  updateMember: (id, member, token) =>
+    request(`/Members/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(member),
+    }),
+
+  deactivateMember: (id, token) =>
+    request(`/Members/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // FAMILIES
+  getFamilies: (token) =>
+    request("/Families", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getFamily: (id, token) =>
+    request(`/Families/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createFamily: (family, token) =>
+    request("/Families", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(family),
+    }),
+
+  updateFamily: (id, family, token) =>
+    request(`/Families/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(family),
+    }),
+
+  deleteFamily: (id, token) =>
+    request(`/Families/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // VISITORS
+  getVisitors: (token) =>
+    request("/Visitors", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getVisitor: (id, token) =>
+    request(`/Visitors/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createVisitor: (visitor, token) =>
+    request("/Visitors", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(visitor),
+    }),
+
+  updateVisitor: (id, visitor, token) =>
+    request(`/Visitors/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(visitor),
+    }),
+
+  updateVisitorFollowUp: (id, followUpStatus, token) =>
+    request(`/Visitors/${id}/follow-up`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        followUpStatus,
+      }),
+    }),
+
+  deleteVisitor: (id, token) =>
+    request(`/Visitors/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // MINISTRIES
+  getMinistries: (token) =>
+    request("/Ministries", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getMinistry: (id, token) =>
+    request(`/Ministries/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createMinistry: (ministry, token) =>
+    request("/Ministries", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(ministry),
+    }),
+
+  updateMinistry: (id, ministry, token) =>
+    request(`/Ministries/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(ministry),
+    }),
+
+  deleteMinistry: (id, token) =>
+    request(`/Ministries/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getMinistryMembers: (id, token) =>
+    request(`/Ministries/${id}/members`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  addMinistryMember: (id, memberId, token) =>
+    request(`/Ministries/${id}/members`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        memberId: Number(memberId),
+      }),
+    }),
+
+  removeMinistryMember: (id, memberId, token) =>
+    request(`/Ministries/${id}/members/${memberId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // ATTENDANCE
+  getAttendance: (token) =>
+    request("/Attendance", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getAttendanceRecord: (id, token) =>
+    request(`/Attendance/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getEventAttendance: (eventId, token) =>
+    request(`/Attendance/event/${eventId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getMemberAttendance: (memberId, token) =>
+    request(`/Attendance/member/${memberId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  recordAttendance: (attendance, token) =>
+    request("/Attendance", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(attendance),
+    }),
+
+  updateAttendance: (id, attendance, token) =>
+    request(`/Attendance/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(attendance),
+    }),
+
+  deleteAttendance: (id, token) =>
+    request(`/Attendance/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // SERVICES
+  getServices: (token) =>
+    request("/Services", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getService: (id, token) =>
+    request(`/Services/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createService: (service, token) =>
+    request("/Services", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(service),
+    }),
+
+  updateService: (id, service, token) =>
+    request(`/Services/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(service),
+    }),
+
+  deleteService: (id, token) =>
+    request(`/Services/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // EVENTS
+  getEvent: (id, token) =>
+    request(`/Events/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createEvent: (event, token) =>
+    request("/Events", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(event),
+    }),
+
+  updateEvent: (id, event, token) =>
+    request(`/Events/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(event),
+    }),
+
+  deleteEvent: (id, token) =>
+    request(`/Events/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getEventRegistrations: (id, token) =>
+    request(`/Events/${id}/registrations`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  registerForEvent: (eventId, memberId, token) =>
+    request(`/Events/${eventId}/registrations`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        memberId,
+      }),
+    }),
+
+  cancelEventRegistration: (eventId, memberId, token) =>
+    request(`/Events/${eventId}/registrations/${memberId}`, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
