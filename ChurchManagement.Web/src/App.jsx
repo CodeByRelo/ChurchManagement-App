@@ -17,6 +17,12 @@ import Attendance from "./pages/admin/Attendance";
 import Services from "./pages/admin/Services";
 import Events from "./pages/admin/Events";
 import Registrations from "./pages/admin/Registrations";
+import Announcements from "./pages/admin/Announcements";
+import PrayerRequests from "./pages/admin/PrayerRequests";
+import Media from "./pages/admin/Media";
+import ChurchInformation from "./pages/admin/ChurchInformation";
+import Users from "./pages/admin/Users";
+import AuditLogs from "./pages/admin/AuditLogs";
 
 function App() {
   return (
@@ -42,6 +48,15 @@ function App() {
             <Route path="/admin/services" element={<Services />} />
             <Route path="/admin/events" element={<Events />} />
             <Route path="/admin/registrations" element={<Registrations />} />
+            <Route path="/admin/announcements" element={<Announcements />} />
+            <Route path="/admin/prayer-requests" element={<PrayerRequests />} />
+            <Route path="/admin/media" element={<Media />} />
+            <Route
+              path="/admin/church-information"
+              element={<ChurchInformation />}
+            />
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/audit-logs" element={<AuditLogs />} />
           </Route>
         </Route>
       </Routes>

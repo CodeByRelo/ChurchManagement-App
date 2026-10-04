@@ -110,6 +110,7 @@ builder.Services.AddScoped<ChurchServiceService>();
 builder.Services.AddScoped<MediaService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<AuditLogService>();
+builder.Services.AddScoped<UserService>();
 
 // =========================================================
 // CONTROLLERS

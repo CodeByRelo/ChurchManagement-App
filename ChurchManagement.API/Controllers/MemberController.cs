@@ -1,4 +1,5 @@
-﻿using ChurchManagement.API.DTOs.Members;
+﻿using System.Security.Claims;
+using ChurchManagement.API.DTOs.Members;
 using ChurchManagement.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,14 @@ namespace ChurchManagement.API.Controllers;
 public class MembersController : ControllerBase
 {
     private readonly MemberService _memberService;
+    private readonly AuditLogService _auditLogService;
 
-    public MembersController(MemberService memberService)
+    public MembersController(
+        MemberService memberService,
+        AuditLogService auditLogService)
     {
         _memberService = memberService;
+        _auditLogService = auditLogService;
     }
 
     // GET: api/members
@@ -73,9 +78,20 @@ public class MembersController : ControllerBase
             });
         }
 
+        var userId = GetCurrentUserId();
+
+        await _auditLogService.LogAsync(
+            userId,
+            "CREATE",
+            "Member",
+            result.Member!.MemberId,
+            $"Created member '{result.Member.FirstName} {result.Member.LastName}'.",
+            GetIpAddress()
+        );
+
         return CreatedAtAction(
             nameof(GetById),
-            new { id = result.Member!.MemberId },
+            new { id = result.Member.MemberId },
             result.Member);
     }
 
@@ -115,6 +131,15 @@ public class MembersController : ControllerBase
             });
         }
 
+        await _auditLogService.LogAsync(
+            GetCurrentUserId(),
+            "UPDATE",
+            "Member",
+            id,
+            $"Updated member '{result.Member!.FirstName} {result.Member.LastName}'.",
+            GetIpAddress()
+        );
+
         return Ok(result.Member);
     }
 
@@ -124,6 +149,16 @@ public class MembersController : ControllerBase
         "Super Administrator,Church Administrator")]
     public async Task<IActionResult> Delete(int id)
     {
+        var member = await _memberService.GetByIdAsync(id);
+
+        if (member == null)
+        {
+            return NotFound(new
+            {
+                message = "Member not found."
+            });
+        }
+
         var result =
             await _memberService.DeactivateAsync(id);
 
@@ -135,6 +170,35 @@ public class MembersController : ControllerBase
             });
         }
 
+        await _auditLogService.LogAsync(
+            GetCurrentUserId(),
+            "DEACTIVATE",
+            "Member",
+            id,
+            $"Deactivated member '{member.FirstName} {member.LastName}'.",
+            GetIpAddress()
+        );
+
         return NoContent();
+    }
+
+    // Gets the authenticated user's ID from the JWT.
+    private int? GetCurrentUserId()
+    {
+        var userIdClaim =
+            User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (int.TryParse(userIdClaim, out var userId))
+        {
+            return userId;
+        }
+
+        return null;
+    }
+
+    // Gets the IP address of the authenticated request.
+    private string? GetIpAddress()
+    {
+        return HttpContext.Connection.RemoteIpAddress?.ToString();
     }
 }

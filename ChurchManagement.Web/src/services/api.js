@@ -31,8 +31,6 @@ async function request(endpoint, options = {}) {
 
 export const api = {
   // PUBLIC
-  getChurchInfo: () => request("/ChurchInfo"),
-
   getServices: () => request("/Services"),
 
   getEvents: () => request("/Events"),
@@ -48,6 +46,18 @@ export const api = {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(requestData),
+    }),
+
+  // CHURCH INFORMATION
+  getChurchInfo: () => request("/ChurchInfo"),
+
+  updateChurchInfo: (churchInfo, token) =>
+    request("/ChurchInfo", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(churchInfo),
     }),
 
   // AUTH
@@ -446,6 +456,176 @@ export const api = {
   cancelEventRegistration: (eventId, memberId, token) =>
     request(`/Events/${eventId}/registrations/${memberId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // ANNOUNCEMENTS
+  getAnnouncementsAdmin: (token) =>
+    request("/Announcements", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getAnnouncement: (id, token) =>
+    request(`/Announcements/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createAnnouncement: (announcement, token) =>
+    request("/Announcements", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(announcement),
+    }),
+
+  updateAnnouncement: (id, announcement, token) =>
+    request(`/Announcements/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(announcement),
+    }),
+
+  archiveAnnouncement: (id, token) =>
+    request(`/Announcements/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // PRAYER REQUESTS
+  getPrayerRequests: (token) =>
+    request("/PrayerRequests", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getPrayerRequest: (id, token) =>
+    request(`/PrayerRequests/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  updatePrayerRequestStatus: (id, status, token) =>
+    request(`/PrayerRequests/${id}/status`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status }),
+    }),
+
+  deletePrayerRequest: (id, token) =>
+    request(`/PrayerRequests/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // MEDIA
+  getMedia: () => request("/Media"),
+
+  getMediaItem: (id, token) =>
+    request(`/Media/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  createMedia: (media, token) =>
+    request("/Media", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(media),
+    }),
+
+  updateMedia: (id, media, token) =>
+    request(`/Media/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(media),
+    }),
+
+  deleteMedia: (id, token) =>
+    request(`/Media/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // USERS
+  createUser: (userData, token) =>
+    request("/Users", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(userData),
+    }),
+
+  getUsers: (token) =>
+    request("/Users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getUser: (id, token) =>
+    request(`/Users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  updateUserRole: (id, roleId, token) =>
+    request(`/Users/${id}/role`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        roleId,
+      }),
+    }),
+
+  updateUserStatus: (id, isActive, token) =>
+    request(`/Users/${id}/status`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        isActive,
+      }),
+    }),
+
+  // AUDIT LOGS
+  getAuditLogs: (token) =>
+    request("/AuditLogs", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  getAuditLog: (id, token) =>
+    request(`/AuditLogs/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

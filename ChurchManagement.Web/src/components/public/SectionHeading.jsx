@@ -1,7 +1,12 @@
-function SectionHeading({ eyebrow, title, description }) {
+function SectionHeading({ eyebrow, title, description, align = "left" }) {
   return (
-    <div className="section-heading">
-      <p className="section-eyebrow">{eyebrow}</p>
+    <div className={`section-heading section-heading-${align}`}>
+      {eyebrow && (
+        <div className="section-eyebrow">
+          <span className="section-eyebrow-line" />
+          <p>{eyebrow}</p>
+        </div>
+      )}
 
       <h2>{title}</h2>
 
