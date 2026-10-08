@@ -48,7 +48,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", policy =>
     {
         policy
-            .AllowAnyOrigin()
+            .WithOrigins(
+                "http://localhost:5173",
+                "https://jesusisable.netlify.app"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -100,7 +103,7 @@ builder.Services.AddScoped<MemberService>();
 builder.Services.AddScoped<FamilyService>();
 builder.Services.AddScoped<MinistryService>();
 builder.Services.AddScoped<EventService>();
-builder.Services.AddScoped<AttendanceService>(); 
+builder.Services.AddScoped<AttendanceService>();
 builder.Services.AddScoped<AttendanceService>();
 builder.Services.AddScoped<AnnouncementService>();
 builder.Services.AddScoped<PrayerRequestService>();
@@ -186,11 +189,8 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 // PIPELINE
 // =========================================================
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
